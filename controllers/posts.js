@@ -12,7 +12,7 @@ const PostController = {
       const { author, content, tags, image, likes, comments, privacy } =
         JSON.parse(body);
       if (author !== undefined && content !== undefined) {
-        const newPost = await Post.create({
+        await Post.create({
           author,
           content,
           tags,
@@ -27,6 +27,7 @@ const PostController = {
       }
     } catch (error) {
       errorHandler(res, 400, 4002);
+      console.log(error);
     }
   },
   async deleteAllPosts(res) {
@@ -36,7 +37,7 @@ const PostController = {
   async deletePosts({ req, res }) {
     try {
       const id = req.url.split('/').pop();
-      Post.findByIdAndDelete(id)
+      await Post.findByIdAndDelete(id)
         .then((result) => {
           console.log(result);
           this.getPosts(res);
@@ -50,7 +51,7 @@ const PostController = {
     try {
       const id = req.url.split('/').pop();
       const editContent = JSON.parse(body);
-      Post.findByIdAndUpdate(id, editContent)
+      await Post.findByIdAndUpdate(id, editContent)
         .then((result) => {
           console.log(result);
           this.getPosts(res);
