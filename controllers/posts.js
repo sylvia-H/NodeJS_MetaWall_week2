@@ -25,9 +25,8 @@ const PostController = {
       } else {
         errorHandler(res, 400, 4001);
       }
-    } catch (error) {
+    } catch {
       errorHandler(res, 400, 4002);
-      console.log(error);
     }
   },
   async deleteAllPosts(res) {
@@ -38,10 +37,7 @@ const PostController = {
     try {
       const id = req.url.split('/').pop();
       await Post.findByIdAndDelete(id)
-        .then((result) => {
-          console.log(result);
-          this.getPosts(res);
-        })
+        .then(() => this.getPosts(res))
         .catch(() => errorHandler(res, 400, 4003));
     } catch {
       errorHandler(res, 400, 4002);
@@ -52,12 +48,9 @@ const PostController = {
       const id = req.url.split('/').pop();
       const editContent = JSON.parse(body);
       await Post.findByIdAndUpdate(id, editContent)
-        .then((result) => {
-          console.log(result);
-          this.getPosts(res);
-        })
+        .then(() => this.getPosts(res))
         .catch(() => errorHandler(res, 400, 4003));
-    } catch (error) {
+    } catch {
       errorHandler(res, 400, 4002);
     }
   },
